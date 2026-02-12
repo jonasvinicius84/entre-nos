@@ -73,12 +73,13 @@
   <script>
     const CODIGO_CASAL = "ENTRE-0902";
 
-    // DATA REAL DA TRANSFERÊNCIA
-    // 10/02/2026 – embrião D5
-    // Mês 1 = fevereiro (JavaScript começa em 0)
-    const DATA_TRANSFERENCIA = new Date(2026, 1, 10, 12, 0, 0);
+    // DATA DA FECUNDAÇÃO (D0)
+    // Coleta + combinação óvulo/espermatozoide
+    // 06/02/2026
+    const DATA_FECUNDACAO = new Date(2026, 1, 6, 12, 0, 0);
 
-    const IDADE_INICIAL_EMBRIAO = 5;
+    // Data da transferência (informativa)
+    const DATA_TRANSFERENCIA = new Date(2026, 1, 10, 12, 0, 0);
 
     const app = document.getElementById("app");
 
@@ -88,11 +89,10 @@
 
     function renderHoje() {
       const hoje = new Date();
-      const diasPassados = diasEntre(DATA_TRANSFERENCIA, hoje);
-      const idadeEmbriao = IDADE_INICIAL_EMBRIAO + diasPassados;
 
-      // Idade gestacional padrão médica
+      const idadeEmbriao = diasEntre(DATA_FECUNDACAO, hoje);
       const idadeGestacional = idadeEmbriao + 14;
+
       const semanas = Math.floor(idadeGestacional / 7);
       const dias = idadeGestacional % 7;
 
@@ -107,13 +107,13 @@
         </div>
 
         <div class="card">
-          <strong>Fase atual</strong><br>
-          Implantação e organização inicial da vida
+          <strong>Marco importante</strong><br>
+          Transferência embrionária em ${DATA_TRANSFERENCIA.toLocaleDateString("pt-BR")} (D5)
         </div>
 
         <div class="card">
           <strong>Curiosidade do dia</strong><br>
-          Mesmo invisível, tudo já está sendo cuidadosamente definido.
+          Cada divisão celular carrega um projeto inteiro de futuro.
         </div>
 
         <div class="footer">
