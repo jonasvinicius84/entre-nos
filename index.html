@@ -62,6 +62,7 @@
     button {
       background: #d8cfc4;
       border: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -70,83 +71,84 @@
   <div class="app" id="app"></div>
 
   <script>
-  const CODIGO_CASAL = "ENTRE-0902";
+    const CODIGO_CASAL = "ENTRE-0902";
 
-  // DATA REAL DA TRANSFERÊNCIA
-  const DATA_TRANSFERENCIA = new Date(2026, 2, 10); 
-  // Atenção: mês 2 = fevereiro (JS começa no zero)
+    // DATA REAL DA TRANSFERÊNCIA
+    // 10/02/2026 – embrião D5
+    // Mês 1 = fevereiro (JavaScript começa em 0)
+    const DATA_TRANSFERENCIA = new Date(2026, 1, 10, 12, 0, 0);
 
-  const IDADE_INICIAL_EMBRIAO = 5; // D5
+    const IDADE_INICIAL_EMBRIAO = 5;
 
-  const app = document.getElementById("app");
+    const app = document.getElementById("app");
 
-  function diasEntre(d1, d2) {
-    return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
-  }
+    function diasEntre(d1, d2) {
+      return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
 
-  function renderHoje() {
-    const hoje = new Date();
-    const diasPassados = diasEntre(DATA_TRANSFERENCIA, hoje);
-    const idadeEmbriao = IDADE_INICIAL_EMBRIAO + diasPassados;
+    function renderHoje() {
+      const hoje = new Date();
+      const diasPassados = diasEntre(DATA_TRANSFERENCIA, hoje);
+      const idadeEmbriao = IDADE_INICIAL_EMBRIAO + diasPassados;
 
-    // idade gestacional padrão médica
-    const idadeGestacional = idadeEmbriao + 14;
-    const semanas = Math.floor(idadeGestacional / 7);
-    const dias = idadeGestacional % 7;
+      // Idade gestacional padrão médica
+      const idadeGestacional = idadeEmbriao + 14;
+      const semanas = Math.floor(idadeGestacional / 7);
+      const dias = idadeGestacional % 7;
 
-    app.innerHTML = `
-      <h1>Entre Nós</h1>
-      <div class="subtitle">onde a vida começa em silêncio</div>
+      app.innerHTML = `
+        <h1>Entre Nós</h1>
+        <div class="subtitle">onde a vida começa em silêncio</div>
 
-      <div class="card">
-        <strong>Hoje, a vida está com</strong><br>
-        ${semanas} semanas e ${dias} dias<br>
-        <small>${idadeEmbriao} dias de desenvolvimento embrionário</small>
-      </div>
+        <div class="card">
+          <strong>Hoje, a vida está com</strong><br>
+          ${semanas} semanas e ${dias} dias<br>
+          <small>${idadeEmbriao} dias de desenvolvimento embrionário</small>
+        </div>
 
-      <div class="card">
-        <strong>Fase atual</strong><br>
-        Implantação e organização inicial da vida
-      </div>
+        <div class="card">
+          <strong>Fase atual</strong><br>
+          Implantação e organização inicial da vida
+        </div>
 
-      <div class="card">
-        <strong>Curiosidade do dia</strong><br>
-        Mesmo invisível, tudo já está sendo cuidadosamente definido.
-      </div>
+        <div class="card">
+          <strong>Curiosidade do dia</strong><br>
+          Mesmo invisível, tudo já está sendo cuidadosamente definido.
+        </div>
 
-      <div class="footer">
-        “Ainda não pode ser visto,<br>mas já é profundamente amado.”
-      </div>
-    `;
-  }
+        <div class="footer">
+          “Ainda não pode ser visto,<br>mas já é profundamente amado.”
+        </div>
+      `;
+    }
 
-  function pedirCodigo() {
-    app.innerHTML = `
-      <h1>Entre Nós</h1>
-      <div class="subtitle">
-        Algumas histórias precisam apenas de um código.
-      </div>
+    function pedirCodigo() {
+      app.innerHTML = `
+        <h1>Entre Nós</h1>
+        <div class="subtitle">
+          Algumas histórias precisam apenas de um código.
+        </div>
 
-      <input id="codigo" placeholder="Digite o código do casal" />
-      <button onclick="verificarCodigo()">Entrar</button>
-    `;
-  }
+        <input id="codigo" placeholder="Digite o código do casal" />
+        <button onclick="verificarCodigo()">Entrar</button>
+      `;
+    }
 
-  function verificarCodigo() {
-    const valor = document.getElementById("codigo").value;
-    if (valor === CODIGO_CASAL) {
-      localStorage.setItem("codigo_ok", "sim");
+    function verificarCodigo() {
+      const valor = document.getElementById("codigo").value.trim();
+      if (valor === CODIGO_CASAL) {
+        localStorage.setItem("codigo_ok", "sim");
+        renderHoje();
+      } else {
+        alert("Código incorreto.");
+      }
+    }
+
+    if (localStorage.getItem("codigo_ok") === "sim") {
       renderHoje();
     } else {
-      alert("Código incorreto.");
+      pedirCodigo();
     }
-  }
-
-  if (localStorage.getItem("codigo_ok") === "sim") {
-    renderHoje();
-  } else {
-    pedirCodigo();
-  }
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/entre-nos/service-worker.js");
